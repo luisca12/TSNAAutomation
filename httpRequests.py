@@ -1,7 +1,10 @@
 import requests
 from requests.auth import HTTPBasicAuth
+from addDevice import addDevicePy, addDeviceJson
+import os
 
 URL = 'https://va10pwvbna304.us.ad.wellpoint.com/bca-networks/api/token'
+addDeviceURL = 'https://va10pwvbna304.us.ad.wellpoint.com/bca-networks/api/v4.0/devices'
 
 def token(username, password, URL):
     try:
@@ -24,5 +27,23 @@ def token(username, password, URL):
     except requests.RequestException as error:
         print(f"Error: {error}")
 
-def addDevice():
-    pass
+def addDevice(token):
+    print(token)
+    os.system("PAUSE")
+    try:
+        addDeviceOut = requests.post(addDeviceURL, data = addDeviceJson,
+                    headers = {'accept':'application/json','Authorization':'Bearer ' + token, 'Content-Type':'application/json'})
+        if addDeviceOut.status_code == 201:
+            print(f"INFO: Device {addDevicePy['name']} added successfully, status code: {addDeviceOut.status_code}")
+        else:
+            print(f"ERROR: Device {addDevicePy['name']} had an error: {addDeviceOut.text}")
+    except requests.RequestException as error:
+        print(f"ERROR: {error}")
+    
+    
+
+
+
+
+
+
