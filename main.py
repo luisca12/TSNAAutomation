@@ -7,7 +7,7 @@ def main():
     from log import authLog
     from utils import checkIsDigit
     from strings import greetingString, menuString, inputErrorString
-    from httpRequests import token, addDevice, URL
+    from httpRequests import getToken, addDevice, delDevice
     import getpass
     greetingString()
     
@@ -19,8 +19,10 @@ def main():
                 # This option will add and remove devices from TSNA
                 username = input("Please enter your username: ")
                 password = getpass.getpass("Please enter your password: ")
-                tokenOut = token(username, password, URL)
+                tokenOut = getToken(username, password)
                 addDevice(tokenOut)
+                os.system("PAUSE")
+                delDevice(tokenOut, "ncdur-ivy-sdw-02")
             if selection == "2":
                 # authLog.info(f"User {} disconnected from the devices {}")
                 # authLog.info(f"User {} logged out from the program.")
