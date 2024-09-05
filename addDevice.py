@@ -1,4 +1,6 @@
 from datetime import date
+from main import actionList, hostnameList, serialList
+
 import json
 
 addDeviceString = '''
@@ -91,6 +93,5 @@ for items in addDevicePy['dynamicFields']:
         items['values'] = [todaysDate]
 
 addDeviceJson = json.dumps(addDevicePy)
-          
 
 # print(addDeviceJson)

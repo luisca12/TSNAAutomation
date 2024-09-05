@@ -1,31 +1,43 @@
 from utils import mkdir
 
 import os
+import getpass
 
 def main():
     mkdir()
+
     from log import authLog
     from utils import checkIsDigit
+    from fileHandler import openNDLM
     from strings import greetingString, menuString, inputErrorString
     from httpRequests import getToken, addDevice, delDevice
-    import getpass
+
     greetingString()
     
     while True:
-        menuString()
-        selection = input("Please choose the option that yyou want: ")
+        username = input("Please enter your username: ")
+        authLog.info(f"Username successfully saved, username: {username}")
+        print(f"INFO: Username successfully saved, username: {username}")
+        password = getpass.getpass("Please enter your password: ")
+        authLog.info(f"Password successfully saved.")
+        print(f"INFO: Password successfully saved")
+        
+        menuString(username)
+        selection = input("Please choose the option that you want: ")
+
         if checkIsDigit(selection):
             if selection == "1":
                 # This option will add and remove devices from TSNA
-                username = input("Please enter your username: ")
-                password = getpass.getpass("Please enter your password: ")
                 tokenOut = getToken(username, password)
-                addDevice(tokenOut)
-                os.system("PAUSE")
-                delDevice(tokenOut, "ncdur-ivy-sdw-02")
+                data = openNDLM()
+                for item in data:
+                    if item == 'ADD/CREATE NEW':
+                        addDevice(tokenOut)
+                    if item == 'DECOMMISSION':
+                        delDevice(tokenOut, '')
+
             if selection == "2":
-                # authLog.info(f"User {} disconnected from the devices {}")
-                # authLog.info(f"User {} logged out from the program.")
+                authLog.info(f"User {username} logged out from the program.")
                 break
         else:
             authLog.error(f"Wrong option chosen {selection}")
